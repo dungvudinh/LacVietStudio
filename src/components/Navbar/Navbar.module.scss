@@ -1,0 +1,121 @@
+@use '../GlobalStyles/_breakpoint.scss' as *;
+
+.navbar 
+{
+    // font-size: 1rem;
+    position: fixed;
+    z-index:1210;
+    width:100%;
+    background-color: #111;
+    color:#fff;
+    top:0;
+    left:0;
+    .navbar-container 
+    {
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        @include mobile 
+        {
+            justify-content: center;
+            position:relative;
+        }
+    }
+    .menu-mobile
+    {
+        position: absolute;
+        left:1rem;
+        display: none;
+        @include mobile 
+        {
+            display:block;
+        }
+    }
+    .navbar-left 
+    {
+        display:flex;
+        flex-direction: row;
+        .navbar-logo
+        {
+            width:7rem;
+            @include mobile
+            {
+                width:6rem;
+            }
+            img 
+            {
+                width:100%;
+                height:auto;
+                object-fit: contain;
+            }
+        }
+    }
+    .navbar-right 
+    {
+        display: flex;
+        align-items: center;
+        @include mobile
+        {
+            display: none;
+        }
+        
+        .navbar-actions 
+        {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width:10rem;
+        }
+       
+    }
+   
+    
+}
+.navbar-menu 
+{
+    display: flex;
+    @include mobile 
+    {
+        display: none !important;
+    }
+}
+.navbar-menu .menu-list
+{
+    display: flex;
+    align-items:center;
+    margin-bottom:0;
+}
+.menu-item 
+{
+    margin-left:2rem;
+    height:100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 1.4rem;
+    @include mobile
+    {
+        font-size: 1.4rem !important;
+    }
+    cursor: pointer;
+    transition: 0.2s ease;
+    &::after 
+    {
+        content:'';
+        height:2px;
+        background-color: var(--primary-color);
+        width:0;
+        position: absolute;
+        bottom:0;
+    }
+    &:hover::after 
+    {
+        width:100%;
+    }
+}
+
+//MUI CUSTOM
+.MuiAccordion-root
+{
+    box-shadow: none !important;
+}
