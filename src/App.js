@@ -1,7 +1,7 @@
 import './App.css';
 import {useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
+import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AccountSetting from './pages/AccountSetting';
@@ -24,9 +24,10 @@ function App() {
       </div>
       <div className="App" style={{marginTop:'75px'}}>
         <Routes>
-          {/* <Route path='/'  element={<Home />}/> */}
-          <Route path='/account' element={<Account />}>
-            <Route path='account-setting' element={<AccountSetting />}/>
+          <Route path='/'  element={<Home />}/>
+          <Route path='/account' >
+            <Route index element={<Account />}/>
+            <Route path='account-setting' element={<AccountSetting />}/>  
           </Route>
         </Routes>
       </div>

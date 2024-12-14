@@ -12,12 +12,10 @@ const cx = classNames.bind(styles);
 
 function AccountSetting() {
     const [openVerifyPass, setOpenVerifyPass] = useState(false);
-    const [age, setAge] = useState('');
+    const [isCorrectPass, setIsCorrectPass] = useState(false);
 
-    const handleChange = (event) => {
-      setAge(event.target.value);
-    };
-  
+   
+ 
     return ( 
         <>
             <Box sx={{ flexGrow: 1 }}>
@@ -36,7 +34,7 @@ function AccountSetting() {
                                     </ListItem>
                                     <Divider />
                                     <ListItem sx={{padding:'22px 0'}} secondaryAction={
-                                        <Switch edge="end" onChange={(e)=>setOpenVerifyPass(e.target.checked)} checked={openVerifyPass}/>}
+                                        <Switch edge="end" onChange={()=>setOpenVerifyPass(true)} checked={isCorrectPass} size='small'/>}
                                     >
                                         <p className={cx('setting-item_title', 'm-0')}>
                                             2-Step Verifcation 
@@ -54,7 +52,7 @@ function AccountSetting() {
                     </Grid2>
                 </Grid2>
             </Box>
-            <VerifyPasswordDialog open={openVerifyPass} onClose={()=>setOpenVerifyPass(false)}/>
+            <VerifyPasswordDialog open={openVerifyPass} onClose={()=>setOpenVerifyPass(false)} setIsCorrectPass={setIsCorrectPass}/>
         </>
         
      );
@@ -76,7 +74,7 @@ const DialogCustom = styled(Dialog)(({ theme }) => ({
       },
     },
   })
-function VerifyPasswordDialog({open, onClose})
+function VerifyPasswordDialog({open, onClose, setIsCorrectPass})
 {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -89,16 +87,26 @@ function VerifyPasswordDialog({open, onClose})
     const handleMouseUpPassword = (event) => {
         event.preventDefault();
     };
+    const handleAuthenPassword = ()=>{
+      setIsCorrectPass(old=>!old);
+      onClose();
+    }
     return (
         <DialogCustom
         onClose={onClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        fullWidth={true}
+        fullWidth={false}
         maxWidth="xs"
-        sx={{borderRadius:'20px', color:'black'}}
+        sx={{ 
+          borderRadius: '20px', 
+          color: 'black',
+          '& .MuiDialog-paper': {  // Add this to set specific width
+              width: '400px'
+          }
+      }}
       >
-        <DialogTitle sx={{ m: 0, p: 2, fontWeight:'700', fontSize:'1.8rem' }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2, fontWeight:'700', fontSize:'1.3rem' }} id="customized-dialog-title">
           Verify Your Password
         </DialogTitle>
         <IconButton
@@ -114,13 +122,16 @@ function VerifyPasswordDialog({open, onClose})
           <Close />
         </IconButton>
         <DialogContent dividers >
-          <Typography gutterBottom  sx={{fontSize:'1.4rem'}}>
+          <Typography gutterBottom  sx={{fontSize:'1.1rem'}}>
             To protect your account security, please re-enter your password before continuing.
           </Typography>
           <CssTextField  id="outlined-size-small" size="small" type={showPassword ? 'text' :'password'} fullWidth={true}
           sx={{marginTop:'10px', '&.Mui-focused fieldset':{borderColor:'#f77919'}}} 
           slotProps={{
             input:{
+                style: {
+                  fontSize: '1.1rem'
+                },
                 endAdornment:
                 <InputAdornment position="end">
                     <IconButton
@@ -132,8 +143,8 @@ function VerifyPasswordDialog({open, onClose})
                     onMouseUp={handleMouseUpPassword}   
                     edge="end"
                     >
-                        {showPassword ? <VisibilityOffOutlined fontSize='small' sx={{width:15, height:15, color:'#111'}}/> 
-                        : <VisibilityOutlined fontSize='small'  sx={{width:15, height:15, color:'#111'}}/>}
+                        {showPassword ? <VisibilityOutlined fontSize='small'  sx={{width:15, height:15, color:'#111'}}/> 
+                        : <VisibilityOffOutlined fontSize='small' sx={{width:15, height:15, color:'#111'}}/>}
                     </IconButton>
               </InputAdornment>
             }
@@ -142,8 +153,11 @@ function VerifyPasswordDialog({open, onClose})
         />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={onClose}>
-            Save changes
+          <Button autoFocus onClick={onClose} variant='outlined' sx={{ fontSize: '1.1rem', textTransform: 'none' }} color='secondary'>
+            Cancel
+          </Button>
+          <Button autoFocus onClick={handleAuthenPassword} variant='contained' sx={{ fontSize: '1.1rem', textTransform: 'none', color: '#fff' }} >
+            Go On
           </Button>
         </DialogActions>
       </DialogCustom>

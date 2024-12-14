@@ -15,6 +15,8 @@ import {ExpandMore, AccountCircle,  Settings, Logout, KeyboardArrowRight} from '
 import { deepOrange} from '@mui/material/colors';
 import englandCountry from '../../assets/images/england.svg';
 import vietnameCountry from '../../assets/images/vietnam.svg';
+import Login from "../Login";
+
 const cx = classNames.bind(styles);
 const LoginConText = createContext();
 
@@ -96,7 +98,7 @@ const listLanguage = [
     }
   ]
 function Navbar() {
-    const [isLogin, setLogin] = useState(true);
+    const [isLogin, setLogin] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [menuContent, setMenuContent]  = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -112,6 +114,7 @@ function Navbar() {
             return navigator.language.split('-')[0];
         return localStorage.getItem('locale');
     });
+    const [openLoginDialog, setOpenLoginDialog] = useState(false);
     const toggleMenuMobile = (newOpen) => () => {
         setOpenMenuMobile(newOpen);
     };
@@ -139,65 +142,70 @@ function Navbar() {
         localStorage.setItem('locale', event.target.value);
     }
     return ( 
-        <LoginConText.Provider value={[isLogin, profile]}>
-            <div className={cx('navbar')}>
-                <Container className={cx('navbar-container')}>
-                    <div className={cx('menu-mobile')}>
-                        <IconButton onClick={toggleMenuMobile(!openMenuMobile)} size='small' sx={{color:'#fff'}}>
-                            <FontAwesomeIcon icon={faBars}/>
-                        </IconButton>
-                        <MenuListMobile openMenu={openMenuMobile} setOpenMenuMobile={setOpenMenuMobile} />
-                    </div>
-                    <div className={cx('navbar-left')}>
-                        <Link className={cx('navbar-logo')} to="/">
-                            <img src={logo} alt="" />
-                        </Link>
-                        <div className={cx('navbar-menu')}>
-                            <ul className={cx('menu-list')}>
-                                {menuList.map((menuItem, index)=>(
-                                    <li key={index} className={cx('menu-item')} onClick={(e)=>handleToggleMenuContent(e, menuItem.contentType, menuItem.content)}>
-                                        {menuItem.display}
-                                    </li>
-                                ))}
-                            </ul>
+            <LoginConText.Provider value={[isLogin, profile]}>
+                <div className={cx('navbar')}>
+                    <Container className={cx('navbar-container')}>
+                        <div className={cx('menu-mobile')}>
+                            <IconButton onClick={toggleMenuMobile(!openMenuMobile)} size='small' sx={{color:'#fff'}}>
+                                <FontAwesomeIcon icon={faBars}/>
+                            </IconButton>
+                            <MenuListMobile openMenu={openMenuMobile} setOpenMenuMobile={setOpenMenuMobile} />
                         </div>
-                    </div>
-                    <div className={cx('navbar-right')}>
-                        <Box sx={{ maxWidth:200 }}>
-                            <FormControl fullWidth>
-                                <Select sx={{ "& .MuiOutlinedInput-notchedOutline": {border: "none"}, 
-                                '& .MuiSvgIcon-root':{color:'white'}, 
-                                '& .MuiSelect-select':{display:'flex', alignItems:'center'}, 
-                                color:'white'
-                                }}
-                                size='small' value={currentLocale} onChange={handleChangeLanguage}
-                                >
-                                {listLanguage.map((language, index)=>(
-                                    <MenuItem  key={index} value={language.value} sx={{display:'flex', alignItems:'center'}}>
-                                        <ListItemIcon sx={{minWidth:30, display:'flex', alignItems:'center'}}>
-                                            <img src={language.image} style={{width:20}}/>
-                                        </ListItemIcon>
-                                        <ListItemText primary={language.name} />
-                                    </MenuItem>
-                                ))}
-                                </Select>
-                            </FormControl>
-                        </Box>
-                        <div className={cx('navbar-actions')}>
-                            
-                            {isLogin 
-                            ?
-                                <UserButton />
-                            :
-                                <Button variant="contained"color="orange" sx={{color:'#fff'}}>Log In</Button>
-                            }
+                        <div className={cx('navbar-left')}>
+                            <Link className={cx('navbar-logo')} to="/">
+                                <img src={logo} alt="" />
+                            </Link>
+                            <div className={cx('navbar-menu')}>
+                                <ul className={cx('menu-list')}>
+                                    {menuList.map((menuItem, index)=>(
+                                        <li key={index} className={cx('menu-item')} onClick={(e)=>handleToggleMenuContent(e, menuItem.contentType, menuItem.content)}>
+                                            {menuItem.display}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </Container>
-            </div>
-            <DrawerHorizontal open={openDrawer} toggleDrawer={toggleDrawer} />
-            <MenuCustom open={open} onCloseMenu={()=>setAnchorEl(null)}  minWidth={200} anchorEl={anchorEl} menuList={menuContent} isMenuWithProfile={false}/>
-        </LoginConText.Provider>
+                        <div className={cx('navbar-right')}>
+                            <Box sx={{ maxWidth:200 }}>
+                                <FormControl fullWidth>
+                                    <Select sx={{ "& .MuiOutlinedInput-notchedOutline": {border: "none"}, 
+                                    '& .MuiSvgIcon-root':{color:'white'}, 
+                                    '& .MuiSelect-select':{display:'flex', alignItems:'center'}, 
+                                    color:'white'
+                                    }}
+                                    size='small' value={currentLocale} onChange={handleChangeLanguage}
+                                    >
+                                    {listLanguage.map((language, index)=>(
+                                        <MenuItem  key={index} value={language.value} sx={{display:'flex', alignItems:'center'}}>
+                                            <ListItemIcon sx={{minWidth:30, display:'flex', alignItems:'center'}}>
+                                                <img src={language.image} style={{width:20}}/>
+                                            </ListItemIcon>
+                                            <ListItemText primary={language.name} />
+                                        </MenuItem>
+                                    ))}
+                                    </Select>
+                                </FormControl>
+                            </Box>
+                            <div className={cx('navbar-actions')}>
+                                
+                                {isLogin 
+                                ?
+                                    <UserButton />
+                                :
+                                    <Button variant="contained" color="orange" 
+                                    sx={{ fontSize: '1.1rem', textTransform: 'none', color: '#fff', marginLeft:'1rem' }} 
+                                    size='small' onClick={()=>setOpenLoginDialog(true)}>
+                                        Log In
+                                    </Button>
+                                }
+                            </div>
+                        </div>
+                    </Container>
+                </div>
+                <DrawerHorizontal open={openDrawer} toggleDrawer={toggleDrawer} />
+                <MenuCustom open={open} onCloseMenu={()=>setAnchorEl(null)}  minWidth={200} anchorEl={anchorEl} menuList={menuContent} isMenuWithProfile={false}/>
+                <Login openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
+            </LoginConText.Provider>
      );
 }
 const settings =[

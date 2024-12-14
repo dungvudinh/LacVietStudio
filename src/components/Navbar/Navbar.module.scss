@@ -92,11 +92,11 @@
     display: flex;
     align-items: center;
     position: relative;
-    font-size: 1.4rem;
-    @include mobile
-    {
-        font-size: 1.4rem !important;
-    }
+    font-size: 1.3rem;
+    // @include mobile
+    // {
+    //     font-size: 1.4rem !important;
+    // }
     cursor: pointer;
     transition: 0.2s ease;
     &::after 

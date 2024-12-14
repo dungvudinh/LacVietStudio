@@ -20,6 +20,13 @@ const theme = createTheme({
     
   }, 
   palette: {
+    primary: {
+      main: '#f77919', 
+      // This will set the default button color
+    },
+    secondary:{
+      main: "rgb(137, 137, 137)"
+    }, 
     orange: createColor('#f77919'), 
     white:'#ffffff',
     dark:'#111', 
