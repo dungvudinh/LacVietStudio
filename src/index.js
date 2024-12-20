@@ -16,8 +16,7 @@ const theme = createTheme({
     fontSize:window.innerWidth <=739 ? 16.8 : 19.6, 
     button:{
       fontSize:`${window.innerWidth <= 739 ? '13px' : '15px'}`
-    }, 
-    
+    },    
   }, 
   palette: {
     primary: {
@@ -30,7 +29,8 @@ const theme = createTheme({
     orange: createColor('#f77919'), 
     white:'#ffffff',
     dark:'#111', 
-    iconFillColor:'#BDBDBD'
+    iconFillColor:'#BDBDBD', 
+    borderColor:'#ddd'
   }, 
   
 })

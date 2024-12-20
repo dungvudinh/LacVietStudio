@@ -3,7 +3,8 @@ import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
-import { Dialog, DialogTitle, DialogContent, DialogActions, IconButton, Typography, TextField, Box, 
+import PropTypes from 'prop-types';
+import { Dialog, DialogTitle, DialogContent, IconButton, Typography, TextField, Box, 
     InputAdornment, Checkbox
 } from '@mui/material';
 import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
@@ -59,12 +60,12 @@ function Login({openLoginDialog, setOpenLoginDialog}) {
                     }
                 }}
             >
-                <DialogTitle sx={{ m: 0, p: 2, fontSize:'1.6rem', textAlign:'center', fontWeight:'600' }} id="customized-dialog-title">
+                <DialogTitle sx={{ m: 0, p: 2, fontSize:'2rem', textAlign:'center', fontWeight:'600' }} id="customized-dialog-title">
                     Lac Viet Studio Account
                 </DialogTitle>
                 <DialogContent dividers sx={{display:'flex', justifyContent:'center'}}>
-                    <Box sx={{ width: 260, margin: '30px auto' }}>
-                        <Typography variant="h5" gutterBottom sx={{fontWeight: 500, textAlign:'center'}}>
+                    <Box sx={{ width: 300, margin: '30px auto' }}>
+                        <Typography variant="h4" gutterBottom sx={{fontWeight: 500, textAlign:'center'}}>
                             Log In
                         </Typography>
                         <Box component="form" sx={{width: '100%'}}>
@@ -79,6 +80,7 @@ function Login({openLoginDialog, setOpenLoginDialog}) {
                                 onChange={(e) => setAccount({...account.password, email:e.target.value})}
                                 onBlur={(e) => setValidateAccount({...validateAccount, isValidateEmail:true})}
                                 placeholder='Email Address*'
+                                sx={{'& input':{fontSize:'1.6rem'}}}
                             />
                             <TextField
                                 margin="normal"
@@ -92,6 +94,7 @@ function Login({openLoginDialog, setOpenLoginDialog}) {
                                 onBlur={(e) => setValidateAccount({...validateAccount, isValidatePassword:true})}
                                 placeholder='Password*'
                                 type={showPassword ? 'text' :'password'}
+                                sx={{'& input':{fontSize:'1.6rem'}}}
                                 slotProps={{
                                     input:{
                                         endAdornment:
@@ -117,28 +120,28 @@ function Login({openLoginDialog, setOpenLoginDialog}) {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, color: '#fff', textTransform: 'none', fontSize: '1.1rem' }}
+                                sx={{ mt: 3, mb: 2, color: '#fff', textTransform: 'none', fontSize: '1.4rem', fontWeight:600 }}
                                 disabled
                             >
                                 Log In
                             </Button>
                         </Box>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between', px: 1, marginTop:0 }}>
-                            <Typography sx={{ fontSize: '1.3rem', color: '#f77919', cursor: 'pointer' }}>
+                            <Typography sx={{ fontSize: '1.4rem', color: '#f77919', cursor: 'pointer' }}>
                                 Create Your Account
                             </Typography>
-                            <Typography sx={{ fontSize: '1.3rem', color: '#f77919', cursor: 'pointer' }}>
+                            <Typography sx={{ fontSize: '1.4rem', color: '#f77919', cursor: 'pointer' }}>
                                 Forgot?
                             </Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', px: 1, mt: 2, marginTop:0 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                             <Checkbox size="small" />
-                            <Typography sx={{ fontSize: '1rem' }}>
+                            <Typography sx={{ fontSize: '1.1rem' }}>
                                 I agree to <span style={{color: '#f77919'}}>Terms of Use</span> and <span style={{color: '#f77919'}}>Privacy Policy</span>
                             </Typography>
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 1 }}>
-                            <Typography sx={{ fontSize: '1.3rem', color: 'rgb(137, 137, 137)', mb: 1 }} className={cx('login-other_text')}>
+                            <Typography sx={{ fontSize: '1.4rem', color: 'rgb(137, 137, 137)', mb: 1 }} className={cx('login-other_text')}>
 
                                 Login with other accounts
 
@@ -156,6 +159,10 @@ function Login({openLoginDialog, setOpenLoginDialog}) {
                 </DialogContent>
             </BootstrapDialog>
      );
+}
+Login.propTypes = {
+    openLoginDialog: PropTypes.bool.isRequired,
+    setOpenLoginDialog: PropTypes.func.isRequired,
 }
 
 export default Login;

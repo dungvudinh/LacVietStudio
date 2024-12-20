@@ -1,21 +1,23 @@
-import {useState, createContext, useContext} from 'react';
+import {useState, createContext, useContext, useRef, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
-import logo from '../../assets/images/logo.png';
+import logo from '../../../assets/images/logo.png';
 import { Container} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars} from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import {Button, Menu, MenuItem, IconButton, ListItemIcon, ListItemText, Box, ListItemButton, 
 Drawer, Divider,Accordion, AccordionSummary, AccordionDetails, Avatar, Tooltip, Grid2, 
-InputLabel, FormControl, Select, ListItem, List
+ FormControl, Select, List,Typography, Badge
 }  from '@mui/material';
-import {ExpandMore, AccountCircle,  Settings, Logout, KeyboardArrowRight} from '@mui/icons-material';
+import {ExpandMore, AccountCircle,  Settings, Logout, KeyboardArrowRight, ShoppingCart, PersonOutlineOutlined, AccountCircleOutlined} from '@mui/icons-material';
 import { deepOrange} from '@mui/material/colors';
-import englandCountry from '../../assets/images/england.svg';
-import vietnameCountry from '../../assets/images/vietnam.svg';
-import Login from "../Login";
+import englandCountry from '../../../assets/images/england.svg';
+import vietnameCountry from '../../../assets/images/vietnam.svg';
+import Login from "../../../components/Login";
+import Cart from '../../../components/Cart';
 
 const cx = classNames.bind(styles);
 const LoginConText = createContext();
@@ -97,7 +99,8 @@ const listLanguage = [
       value:'vi'
     }
   ]
-function Navbar() {
+function Navbar({}) {
+    const navigate = useNavigate();
     const [isLogin, setLogin] = useState(false);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [menuContent, setMenuContent]  = useState([]);
@@ -115,6 +118,18 @@ function Navbar() {
         return localStorage.getItem('locale');
     });
     const [openLoginDialog, setOpenLoginDialog] = useState(false);
+    const navbarRef = useRef();
+    const [openCart, setOpenCart] = useState(false);
+    useEffect(()=>
+    {
+        const shrinkHeader= ()=>
+        {
+            if(document.body.scrollTop> 100 ||document.documentElement.scrollTop>100) navbarRef.current.style.backgroundColor = "#111";
+            else navbarRef.current.style.backgroundColor = "transparent";
+        }
+        window.addEventListener('scroll', shrinkHeader);
+        return ()=>window.removeEventListener('scroll', shrinkHeader);
+    })
     const toggleMenuMobile = (newOpen) => () => {
         setOpenMenuMobile(newOpen);
     };
@@ -124,8 +139,20 @@ function Navbar() {
     const handleToggleMenuContent = (e, contentType, content)=>{
         if(contentType === 'drawer')
         {
+            if(openDrawer){
+                Object.assign(navbarRef.current.style, {
+                    backgroundColor: "transparent"
+                  });
+            }
+            else {
+                Object.assign(navbarRef.current.style, {
+                    backgroundColor: "#111"
+                  });
+            }
+                
             setOpenDrawer(!openDrawer);
             setAnchorEl(null);
+
         }
         else if(contentType === 'menu')
         {
@@ -143,7 +170,7 @@ function Navbar() {
     }
     return ( 
             <LoginConText.Provider value={[isLogin, profile]}>
-                <div className={cx('navbar')}>
+                <div className={cx('navbar')} ref={navbarRef}>
                     <Container className={cx('navbar-container')}>
                         <div className={cx('menu-mobile')}>
                             <IconButton onClick={toggleMenuMobile(!openMenuMobile)} size='small' sx={{color:'#fff'}}>
@@ -174,7 +201,7 @@ function Navbar() {
                                     color:'white'
                                     }}
                                     size='small' value={currentLocale} onChange={handleChangeLanguage}
-                                    >
+                                    onClick={()=>console.log('clicked')}>
                                     {listLanguage.map((language, index)=>(
                                         <MenuItem  key={index} value={language.value} sx={{display:'flex', alignItems:'center'}}>
                                             <ListItemIcon sx={{minWidth:30, display:'flex', alignItems:'center'}}>
@@ -187,16 +214,27 @@ function Navbar() {
                                 </FormControl>
                             </Box>
                             <div className={cx('navbar-actions')}>
-                                
+                                {/* <Button variant="contained" color="orange" 
+                                    sx={{ fontSize: '1.4rem', textTransform: 'none', color: '#fff', margin:'0 2rem' }} 
+                                    size='small' onClick={()=>navigate('/store')}>
+                                        Store
+                                </Button> */}
+                                <IconButton 
+                                    color='white' 
+                                    sx={{margin:'0 2rem'}}
+                                    onClick={() => setOpenCart(true)}
+                                >
+                                    <Badge badgeContent={4} color="primary" sx={{'& .MuiBadge-badge':{color:'#fff'}}}>
+                                        <ShoppingCart sx={{color:"#fff" }}/>
+                                    </Badge>
+                                </IconButton>
                                 {isLogin 
                                 ?
                                     <UserButton />
                                 :
-                                    <Button variant="contained" color="orange" 
-                                    sx={{ fontSize: '1.1rem', textTransform: 'none', color: '#fff', marginLeft:'1rem' }} 
-                                    size='small' onClick={()=>setOpenLoginDialog(true)}>
+                                    <Typography onClick={()=>setOpenLoginDialog(true)} fontWeight={600} sx={{cursor:'pointer'}}>
                                         Log In
-                                    </Button>
+                                    </Typography>
                                 }
                             </div>
                         </div>
@@ -205,6 +243,7 @@ function Navbar() {
                 <DrawerHorizontal open={openDrawer} toggleDrawer={toggleDrawer} />
                 <MenuCustom open={open} onCloseMenu={()=>setAnchorEl(null)}  minWidth={200} anchorEl={anchorEl} menuList={menuContent} isMenuWithProfile={false}/>
                 <Login openLoginDialog={openLoginDialog} setOpenLoginDialog={setOpenLoginDialog}/>
+                <Cart open={openCart} onClose={() => setOpenCart(false)} />
             </LoginConText.Provider>
      );
 }
@@ -286,13 +325,13 @@ function UserButton()
             <Tooltip title="Account settings" >
                 <IconButton
                     onClick={handleClick}
-                    size="small"
-                    sx={{ ml: 2 }}
+                    size="large"
                     aria-controls={open ? 'account-menu' : undefined}
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-                    <Avatar sx={{ bgcolor: deepOrange[500], width: 30, height: 30 }}>DV</Avatar>
+                    {/* <Avatar sx={{ bgcolor: deepOrange[500], width: 30, height: 30 }}>DV</Avatar> */}
+                    <AccountCircle sx={{color:"#fff"}} fontSize='large'/>
                 </IconButton>
             </Tooltip>
             <MenuCustom open={open} onCloseMenu={handleClose} minWidth={200} anchorEl={anchorEl} menuList={settings} isMenuWithProfile={true}/>
@@ -370,7 +409,7 @@ function MenuListMobile({openMenu, setOpenMenuMobile})
 function DrawerHorizontal({open, toggleDrawer})
 {
     return (
-        <Drawer open={open} onClose={toggleDrawer(false)} anchor='top'>
+        <Drawer open={open} onClose={toggleDrawer(false)} anchor='top' aria-hidden="false"> 
             <Box  role="presentation" onClick={toggleDrawer(false)} sx={{width:'auto', marginTop:'80px', flexGrow: 1}}>
                 <Grid2 container justifyContent="center" >
                     <Grid2 size={10} marginTop="20px" sx={{bgcolor:'white', padding:'20px', borderRadius:'10px'}}>

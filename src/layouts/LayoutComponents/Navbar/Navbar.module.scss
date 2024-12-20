@@ -1,4 +1,4 @@
-@use '../GlobalStyles/_breakpoint.scss' as *;
+@use '../../../components/GlobalStyles/breakpoint' as *;
 
 .navbar 
 {
@@ -6,10 +6,38 @@
     position: fixed;
     z-index:1210;
     width:100%;
-    background-color: #111;
+    background-color: transparent;
     color:#fff;
     top:0;
     left:0;
+    right:0;
+    transition: height 0.3s ease, background-color 0.3s ease;
+    &.dark 
+    {
+        background-color:#111;
+        color: #111;
+        border-bottom: 1px solid var(--border-color);
+        // Update icon colors for white background
+        .MuiSvgIcon-root {
+            color: #111 !important;
+        }
+        
+        // Update select color for white background
+        .MuiSelect-select {
+            color: #111 !important;
+        }
+
+        // Update menu icon color for white background
+        .menu-mobile {
+            .MuiIconButton-root {
+                color: #111 !important;
+            }
+        }
+    }
+    &.shrink 
+    {
+        background-color: #111;
+    }
     .navbar-container 
     {
         display:flex;
@@ -64,7 +92,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width:10rem;
+            // width:10rem;
         }
        
     }
@@ -92,11 +120,11 @@
     display: flex;
     align-items: center;
     position: relative;
-    font-size: 1.3rem;
-    // @include mobile
-    // {
-    //     font-size: 1.4rem !important;
-    // }
+    font-size: 1.6rem;
+    @include mobile
+    {
+        font-size: 1.4rem !important;
+    }
     cursor: pointer;
     transition: 0.2s ease;
     &::after 

@@ -1,0 +1,50 @@
+//FOOTER 
+.footer-signup_input
+{
+    height:100%;
+    border:none;
+    font-size: 1.6rem;
+    flex:1;
+    &:focus 
+    {
+        outline: none;
+    }
+}
+.link-title 
+{
+    padding:15px 0;
+    font-weight: 600;
+
+}
+.link-type
+{
+    padding:5px 0 15px;
+}
+.privacy 
+{
+    .privacy-item 
+    {
+        padding: 0px 10px;
+        font-size: 14px;
+        line-height: 14px;
+        height: 14px;
+        border-right: 1px solid #9E9E9E;
+        white-space: nowrap;
+        &:first-child
+        {
+            padding-left: 0px;
+        }
+        &:last-child
+        {
+            border-right: none;
+        }
+    }
+}
+.copyright
+{
+    padding: 10px 0px;
+    font-size: 14px;
+    line-height: 16px;
+    margin-right: 60px;
+    color:#9E9E9E;
+}

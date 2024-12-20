@@ -1,0 +1,123 @@
+@use '../../components/GlobalStyles/GlobalStyles.scss' as *;
+.home
+{
+    background: rgb(255, 255, 255);
+    margin-bottom:100px;
+    .grid-bg-item
+    {
+        width:100%;
+        position: relative;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 450px;
+        .text-content
+        {
+            padding-top:32px;
+            text-align:center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            .grid-item_title
+            {
+                font-weight: 600;
+                font-size: 3rem;
+            }
+            .grid-item_desc
+            {
+                font-size: 1.6rem;
+            }
+            .grid-item_link
+            {
+                display:flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width:200px;
+            }
+        }
+        
+    }
+    //3D service
+    .category2-title
+    {
+        font-weight: 700;
+        font-size: 3.5rem;
+    }
+    .category2-desc
+    {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    .img-slider 
+    {
+        position: relative;
+        width:100%;
+        picture 
+        {
+            &::after 
+            {
+                content:'';
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                bottom:0;
+                background-image: linear-gradient(to top, #0f0f0f, rgba(#000,0));
+            }
+            .service-img_content 
+            {
+                width:100%;
+                object-fit: contain;
+                
+                
+            }
+        }
+        
+    }
+    .service-item_content
+    {
+        position:absolute;
+        bottom:0;
+        color:#fff;
+        padding:20px;
+        width:100%;
+        z-index:99;
+        user-select: none;
+        .text 
+        {
+            h1 
+            {
+                font-weight: 600;
+                font-size: 3rem;
+                text-align: left;
+            }
+            p 
+            {
+                text-align: left;
+                font-size: 1.6rem;
+            }
+        }
+        .action 
+        {
+            width:40px;
+            height:40px;
+            border:none;
+            border-radius: 50%;
+            background-color:var(--primary-color); 
+            &:hover 
+            {
+                background-color: var(--primary-color-hover);
+            }
+        }
+    }
+   
+    
+    // .language-content
+    // {
+    //     position: absolute;
+    //     right: 0;
+    //     bottom: -35px;
+    // }
+}

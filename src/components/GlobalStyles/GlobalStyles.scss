@@ -8,6 +8,8 @@
     --secondary-color: rgb(89, 89, 89);
     --bg-color-select: #f779191f;
     --text-color:#111;
+    --price-highlight:#f94c43;
+    --border-color: #ddd;
 }
 * 
 {
@@ -29,6 +31,7 @@ body
     font-family: "Manrope",sans-serif !important;
     font-optical-sizing: auto;
     font-style: normal;
+    // overflow: hidden;
     background-color: #f7f7f7 !important;
     @include mobile 
     {
@@ -40,6 +43,7 @@ body
     width: 6px;
     height:6px;
     background-color: #F5F5F5;
+    display: none;
 } 
 
 ::-webkit-scrollbar-thumb {
@@ -94,14 +98,18 @@ a
     text-decoration: none;
     color:var(--text-color);
 }
+ul 
+{
+    padding:0;
+}
 // MUI custom 
 .MuiMenuItem-root.Mui-selected
 {
     background-color:var(--bg-color-select) !important;
 }
-.MuiListItemText-primary
+.MuiListItemText-primary, .MuiMenuItem-root
 {
-    font-size: 1.3rem !important;
+    font-size: 1.6rem !important;
     @include mobile 
     {
         font-size: 1.4rem !important;
@@ -140,4 +148,14 @@ a
 .MuiAccordion-root
 {
     box-shadow: none !important;
+}
+
+//swiper custom 
+.swiper-pagination-bullet {
+    background-color: rgba(0, 0, 0, 0.3);  /* Change to any color you prefer */
+}
+
+/* Customize the active pagination bullet */
+.swiper-pagination-bullet-active {
+    background-color: var(--primary-color);  /* Example: Tomato color for the active bullet */
 }
