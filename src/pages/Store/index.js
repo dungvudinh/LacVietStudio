@@ -1,47 +1,119 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Grid2 as Grid, Box, TextField, InputAdornment, IconButton, MenuItem, Menu, Pagination } from "@mui/material";
+import { Grid2 as Grid, Box, TextField, InputAdornment, IconButton, MenuItem, Menu, Pagination, Typography, Divider, Checkbox, ListItemIcon } from "@mui/material";
 import { Container } from 'react-bootstrap';
 import styles from './Store.module.scss';
 import classNames from "classnames/bind";
 import HeroSlide from "../../layouts/LayoutComponents/HeroSlide";
-import { Clear, KeyboardDoubleArrowRight, Search, Sort} from "@mui/icons-material";
+import { Check, Clear, KeyboardDoubleArrowRight, Search, Sort} from "@mui/icons-material";
 
 const cx = classNames.bind(styles);
 const categories = [
     {
         id:1,
-        name:'Category 1', 
+        name:'Danh mục', 
+        type:'select', 
         content:[
             {
                 id: 1, 
-                title:'3D Printers',
+                title:'Đồ chơi trẻ em',
             }, 
             {
                 id:2, 
-                title:'Filaments'
+                title:'Đồ trang trí'
             }
+        ]
+    }, 
+    {
+        id:2, 
+        name:'Giá (Đ)', 
+        type:'checkbox', 
+        content:[
+            {
+                id:1,
+                title:'Dưới 100.000'
+            },
+            {
+                id:2,
+                title:'100.000 - 500.000'
+            },
+            {
+                id:3,
+                title:'500.000 - 1.000.000'
+            },
+            {
+                id:4,
+                title:'1.000.000 - 2.000.000'
+            },
+            {
+                id:5,
+                title:'Trên 2.000.000'
+            }
+        ]
+    }, 
+    {
+        id:3, 
+        name:'Tuổi',
+        type:'checkbox', 
+        content:[
+            {
+                id:1,
+                title:'Từ 0 - 1 tuổi'
+            },
+            {
+                id:2,
+                title:'Từ 1 - 3 tuổi'
+            },
+            {
+                id:3,
+                title:'Từ 3 - 6 tuổi'
+            },
+            {
+                id:4,
+                title:'Từ 6 - 12 tuổi'
+            },
+            {
+                id:5,
+                title:'12 tuổi trở lên'
+            },
+           
         ]
     }
 ]
 const listSort =[
     {
         id:1, 
-        name:'Relevance'
+        name:'Mặc định'
     }, 
     {
         id:2, 
-        name:'Price, low to high'
+        name:'Sản phẩm mới'
     }, 
     {
         id:3, 
-        name:'Price, high to low'
+        name:'Bán chạy'
+    }, 
+    {
+        id:4, 
+        name: 'Tên sản phẩm A - Z'
+    }, 
+    {
+        id:5, 
+        name: 'Tên sản phẩm Z - A'
+    }, 
+    {
+        id:6, 
+        name:'Giá giảm dần'
+    }, 
+    {
+        id:7,
+        name:'Giá tăng dần'
     }
 ]
 function Store() {
     const [anchorEl, setAnchorEl] = useState(null);
     const [currentFilterId, setCurrentFilterId]= useState(1);
-    const [currentSortId, setCurrentSortId]= useState(null);
+    const [currentSortId, setCurrentSortId]= useState(1);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -96,12 +168,25 @@ function Store() {
                                                 vertical: 'top',
                                                 horizontal: 'right',
                                               }}
+                                              slotProps={{
+                                                paper:{
+                                                    sx:{
+                                                        minWidth:200
+                                                    }
+                                                }
+                                            }}
+                                            defaultChecked={currentSortId}
                                         >
                                             {listSort.map(sortItem=>(
                                                 <MenuItem key={sortItem.id} onClick={()=>{
                                                     setCurrentSortId(sortItem.id);
                                                     handleClose();
                                                 }} sx={{fontWeight:600, justifyContent:'flex-end'}}>
+                                                    {currentSortId === sortItem.id && (
+                                                        <ListItemIcon>
+                                                            <Check fontSize="small"/>
+                                                        </ListItemIcon>
+                                                    )}
                                                     {sortItem.name}
                                                 </MenuItem>
                                             ))}
@@ -118,43 +203,55 @@ function Store() {
                 <Grid container spacing={3} className={cx('main-content')}>
                     {/* Left sidebar - Categories */}
                     
-                    <Grid size={2}>
+                    <Grid size={3}>
                         <div className={cx('category-filter-wrapper')}>
-                            {currentSortId && (
-                                <div className={cx('sort-by')}>
-                                    <div className={cx('sort-by_header')}>
-                                        <p className={cx('sort-by_header__title')}>SORT BY</p>
-                                        <span className={cx('sort-by_header__action')} onClick={()=>setCurrentSortId(null)}>Clear All</span>
-                                    </div>
-                                    <ul className={cx('sort-by_content')}>
-                                        {
-                                            listSort.filter(sortItem=>sortItem.id === currentSortId).map(sortItem=>(
-                                                <li className={cx('sort-by_content__item')} key={sortItem.id}>
-                                                    <span className={cx('content-item_title')}>{sortItem.name}</span>
-                                                    <IconButton className={cx('content-item_action')} size="small" onClick={()=>setCurrentSortId(null)}>
-                                                        <Clear fontSize="small"/>
-                                                    </IconButton>
-                                                </li>
-                                            ))
-                                        }
-                                    </ul>
+                            <div className={cx('sort-by')}>
+                                <div className={cx('sort-by_header')}>
+                                    <Typography variant="h6" className={cx('sort-by_header__title')}>Lọc theo</Typography>
+                                    <span className={cx('sort-by_header__action')} onClick={()=>setCurrentSortId(null)}>Clear All</span>
                                 </div>
-                            )}
+                                <ul className={cx('sort-by_content')}>
+                                    {
+                                        listSort.filter(sortItem=>sortItem.id === currentSortId).map(sortItem=>(
+                                            <li className={cx('sort-by_content__item')} key={sortItem.id}>
+                                                <span className={cx('content-item_title')}>{sortItem.name}</span>
+                                                <IconButton className={cx('content-item_action')} size="small" onClick={()=>setCurrentSortId(null)}>
+                                                    <Clear fontSize="small"/>
+                                                </IconButton>
+                                            </li>
+                                        ))
+                                    }
+                                </ul>
+                            </div>
                             <div className={cx('category-filter')}>
                                 {categories.map((category)=>(
                                     <div className={cx('category-item')} key={category.id}>
-                                        <h2>{category.name}</h2>
+                                        <Typography variant="h6" fontWeight={700} marginBottom='15px' color="primary">{category.name}</Typography>
                                         <ul>
-                                            {category.content.map((categoryItemChild)=>(
-                                                <li key={categoryItemChild.id} onClick={()=>handleFilter(categoryItemChild.id)} className={cx({active: categoryItemChild.id === currentFilterId})}>
-                                                    <KeyboardDoubleArrowRight className={cx('category-item_child__icon')}/>
-                                                    <p className={cx('category-item_child__title')}>
-                                                        {categoryItemChild.title}
-                                                    </p>
-                                                </li>
-                                            ))}
+                                            {category.type === 'select'
+                                            ? 
+                                                category.content.map((categoryItemChild)=>(
+                                                    <li key={categoryItemChild.id} onClick={()=>handleFilter(categoryItemChild.id)} className={cx({active: categoryItemChild.id === currentFilterId})}>
+                                                        <KeyboardDoubleArrowRight className={cx('category-item_child__icon')}/>
+                                                        <p className={cx('category-item_child__title', 'select')}>
+                                                            {categoryItemChild.title}
+                                                        </p>
+                                                    </li>
+                                                ))
+                                            : 
+                                                category.content.map((categoryItemChild)=>(
+                                                    <li key={categoryItemChild.id} onClick={()=>handleFilter(categoryItemChild.id)} className={cx({active: categoryItemChild.id === currentFilterId})}>
+                                                        <p className={cx('category-item_child__title')}>
+                                                            <Checkbox size="small"/>
+                                                            {categoryItemChild.title}
+                                                        </p>
+                                                    </li>
+                                                ))
+                                            }
+                                            
                                         </ul>
                                     </div>
+
                                 ))}
                                 
                             </div>
@@ -162,11 +259,11 @@ function Store() {
                     </Grid>
 
                     {/* Right content - Product list */}
-                    <Grid  size={10}>
+                    <Grid  size={9}>
                         <div className={cx('product-grid')}>
                             <Grid container spacing={3}>
                                 {[1,2,3,4,5,6,7,8, 9, 10, 11, 12].map((item, index) => (
-                                    <Grid size={3} key={index}>
+                                    <Grid size={4} key={index}>
                                         <Link className={cx('product-item')} to={`/product-detail/1`}>
                                             <div className={cx('image-container')}>
                                                 <img 

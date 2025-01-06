@@ -1,16 +1,15 @@
-import {useState, createContext, useContext, useRef, useEffect} from 'react';
+import {useState, createContext, useContext, useRef, useEffect, useLayoutEffect} from 'react';
 import PropTypes from 'prop-types';
 import styles from './Navbar.module.scss';
 import classNames from 'classnames/bind';
 import logo from '../../../assets/images/logo.png';
 import { Container} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { faBars} from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import {Button, Menu, MenuItem, IconButton, ListItemIcon, ListItemText, Box, ListItemButton, 
 Drawer, Divider,Accordion, AccordionSummary, AccordionDetails, Avatar, Tooltip, Grid2, 
- FormControl, Select, List,Typography, Badge
+ FormControl, Select, List,Typography, Badge, Stack
 }  from '@mui/material';
 import {ExpandMore, AccountCircle,  Settings, Logout, KeyboardArrowRight, ShoppingCart, PersonOutlineOutlined, AccountCircleOutlined} from '@mui/icons-material';
 import { deepOrange} from '@mui/material/colors';
@@ -18,74 +17,68 @@ import englandCountry from '../../../assets/images/england.svg';
 import vietnameCountry from '../../../assets/images/vietnam.svg';
 import Login from "../../../components/Login";
 import Cart from '../../../components/Cart';
+import { FireIcon, UserIcon } from '../../../assets/icons';
 
 const cx = classNames.bind(styles);
 const LoginConText = createContext();
 
 const menuList = [
     {
-        display:'3D Printers', 
+        display:'3D Store', 
         path:'', 
         contentType:"drawer", 
-        name:'panel1'
+        belongTo: ['home', 'store', 'product', 'profile-setting'],
     }, 
     {
-        display:'Filament', 
-        path:'', 
-        contentType:'menu', 
-        name:'panel2', 
-        content:[
-            {
-                primary:'Shop All Filament', 
-                path:''
-            }, 
-            {
-                primary:'Filament Guild', 
-                path:''
-            }
-        ]
+        display:'Service', 
+        path:'/service', 
+        contentType:'link', 
+        belongTo:['home', 'store', 'product', 'profile-setting'], 
+        // content:[
+        //     {
+        //         primary:'In mô hình 3D', 
+        //         path:''
+        //     }, 
+        //     {
+        //         primary:'Thiết kế file 3D', 
+        //         path:''
+        //     }
+        // ]
     }, 
     {
-        display:'Accessories', 
+        display:'Architecture Model', 
         path:'', 
-        name:'panel3'
+        contentType:'link',
+        belongTo:['home', 'profile-setting']
     }, 
     {
-        display:'Software', 
-        path:'', 
-        name:'panel4'
-    }, 
+        display:'News',
+        path:'/news',
+        contentType:'link',
+        belongTo:['home','news', 'profile-setting']
+    },
     {
-        display:'Support', 
+        display:'End-of-Year Sale', 
         path:'', 
-        name:'panel5'
-        
+        contentType:'link', 
+        belongTo:['store', 'product'], 
+        icon:({width, height, className})=><FireIcon  width={width} height={height} className={className}/>
     }, 
+    // {
+    //     display:'About Us', 
+    //     path:'', 
+    //     contentType:'link', 
+    //     belongTo:['home', 'profile-setting'],
+    // }, 
     {
-        display:'Company', 
-        path:'', 
-        contentType:'menu', 
-        name:'panel6', 
-        content: [
-            {
-                primary:'About Us',
-                path:''
-            },
-            {
-                primary:'Blog', 
-                path:''
-            }, 
-            {
-                primary:'Contact', 
-                path:''
-            }
-        ]
+        display:'Contact Us', 
+        path:'/contact-us', 
+        contentType:'link',
+        belongTo:['home', 'profile-setting']
     }, 
-    {
-        display:'Makerworld', 
-        path:'', 
-        name:'panel7'
-    }
+   
+    
+    
 ]
 const listLanguage = [
     {
@@ -99,9 +92,9 @@ const listLanguage = [
       value:'vi'
     }
   ]
-function Navbar({}) {
+function Navbar({belongTo}) {
     const navigate = useNavigate();
-    const [isLogin, setLogin] = useState(false);
+    const [isLogin, setLogin] = useState(true);
     const [openDrawer, setOpenDrawer] = useState(false);
     const [menuContent, setMenuContent]  = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -120,12 +113,20 @@ function Navbar({}) {
     const [openLoginDialog, setOpenLoginDialog] = useState(false);
     const navbarRef = useRef();
     const [openCart, setOpenCart] = useState(false);
+    const [navbarColor, setNavbarColor] = useState('');
+    useLayoutEffect(()=>{
+        if(belongTo === 'home') setNavbarColor('');
+        else if(belongTo === 'store') setNavbarColor('white');
+        else if(belongTo === 'profile-setting') setNavbarColor('black');
+    }, [belongTo]);
     useEffect(()=>
     {
         const shrinkHeader= ()=>
         {
-            if(document.body.scrollTop> 100 ||document.documentElement.scrollTop>100) navbarRef.current.style.backgroundColor = "#111";
-            else navbarRef.current.style.backgroundColor = "transparent";
+            if(belongTo === 'home'){
+                if(document.body.scrollTop> 100 ||document.documentElement.scrollTop>100) navbarRef.current.style.backgroundColor = "#111";
+                else navbarRef.current.style.backgroundColor = "transparent";
+            }
         }
         window.addEventListener('scroll', shrinkHeader);
         return ()=>window.removeEventListener('scroll', shrinkHeader);
@@ -134,22 +135,36 @@ function Navbar({}) {
         setOpenMenuMobile(newOpen);
     };
     const toggleDrawer = (newOpen) => () => {
-        setOpenDrawer(newOpen);
-      };
-    const handleToggleMenuContent = (e, contentType, content)=>{
-        if(contentType === 'drawer')
-        {
+        if(navbarColor === ''){
             if(openDrawer){
                 Object.assign(navbarRef.current.style, {
                     backgroundColor: "transparent"
                   });
             }
-            else {
+            else{
                 Object.assign(navbarRef.current.style, {
                     backgroundColor: "#111"
                   });
             }
-                
+        }
+        setOpenDrawer(newOpen);
+      };
+    
+    const handleToggleMenuContent = (e, contentType, content)=>{
+        if(contentType === 'drawer')
+        {
+            if(navbarColor === ''){
+                if(openDrawer){
+                    Object.assign(navbarRef.current.style, {
+                        backgroundColor: "transparent"
+                      });
+                }
+                else{
+                    Object.assign(navbarRef.current.style, {
+                        backgroundColor: "#111"
+                      });
+                }
+            }
             setOpenDrawer(!openDrawer);
             setAnchorEl(null);
 
@@ -170,11 +185,12 @@ function Navbar({}) {
     }
     return ( 
             <LoginConText.Provider value={[isLogin, profile]}>
-                <div className={cx('navbar')} ref={navbarRef}>
+                <div className={cx('navbar', `${navbarColor}`)} ref={navbarRef}>
                     <Container className={cx('navbar-container')}>
                         <div className={cx('menu-mobile')}>
                             <IconButton onClick={toggleMenuMobile(!openMenuMobile)} size='small' sx={{color:'#fff'}}>
                                 <FontAwesomeIcon icon={faBars}/>
+
                             </IconButton>
                             <MenuListMobile openMenu={openMenuMobile} setOpenMenuMobile={setOpenMenuMobile} />
                         </div>
@@ -184,11 +200,22 @@ function Navbar({}) {
                             </Link>
                             <div className={cx('navbar-menu')}>
                                 <ul className={cx('menu-list')}>
-                                    {menuList.map((menuItem, index)=>(
-                                        <li key={index} className={cx('menu-item')} onClick={(e)=>handleToggleMenuContent(e, menuItem.contentType, menuItem.content)}>
-                                            {menuItem.display}
-                                        </li>
-                                    ))}
+                                    {menuList
+                                        .filter(menuItem => menuItem.belongTo.includes(belongTo))
+                                        .map((menuItem, index) => (
+                                            <li key={index} className={cx('menu-item')} onClick={(e)=>handleToggleMenuContent(e, menuItem.contentType, menuItem.content)}>
+                                                {menuItem.contentType === 'link'
+                                                ?
+                                                    <Link to={menuItem.path} className={`d-flex align-items-center ${(navbarColor === '' || navbarColor === 'black')  ? 'text-white' : 'text-black'}`}>
+                                                        {menuItem.icon && <menuItem.icon width={20} height={20} className='me-2'/>}
+                                                        {menuItem.display}
+                                                    </Link>
+                                                :
+                                                    menuItem.display
+                                                }
+                                            </li>
+                                        ))
+                                    }
                                 </ul>
                             </div>
                         </div>
@@ -196,10 +223,12 @@ function Navbar({}) {
                             <Box sx={{ maxWidth:200 }}>
                                 <FormControl fullWidth>
                                     <Select sx={{ "& .MuiOutlinedInput-notchedOutline": {border: "none"}, 
-                                    '& .MuiSvgIcon-root':{color:'white'}, 
+                                    '& .MuiSvgIcon-root':{color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}, 
                                     '& .MuiSelect-select':{display:'flex', alignItems:'center'}, 
-                                    color:'white'
+                                    '& .MuiTypography-root':{color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}, 
+                                    color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111', 
                                     }}
+                                    
                                     size='small' value={currentLocale} onChange={handleChangeLanguage}
                                     onClick={()=>console.log('clicked')}>
                                     {listLanguage.map((language, index)=>(
@@ -214,27 +243,34 @@ function Navbar({}) {
                                 </FormControl>
                             </Box>
                             <div className={cx('navbar-actions')}>
-                                {/* <Button variant="contained" color="orange" 
-                                    sx={{ fontSize: '1.4rem', textTransform: 'none', color: '#fff', margin:'0 2rem' }} 
-                                    size='small' onClick={()=>navigate('/store')}>
-                                        Store
-                                </Button> */}
-                                <IconButton 
-                                    color='white' 
-                                    sx={{margin:'0 2rem'}}
-                                    onClick={() => setOpenCart(true)}
-                                >
-                                    <Badge badgeContent={4} color="primary" sx={{'& .MuiBadge-badge':{color:'#fff'}}}>
-                                        <ShoppingCart sx={{color:"#fff" }}/>
-                                    </Badge>
-                                </IconButton>
+                                {(belongTo === 'home' || belongTo === 'profile-setting') 
+                                ?
+                                    <Button variant="contained" color="orange" 
+                                        sx={{ fontSize: '1.4rem', textTransform: 'none', color: '#fff', margin:'0 2rem' }} 
+                                        size='small' onClick={()=>navigate('/store')}>
+                                            Store
+                                    </Button>
+                                :
+                                    <IconButton  
+                                        color={(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'} 
+                                        sx={{margin:'0 2rem'}}
+                                        onClick={() => setOpenCart(true)}
+                                    >
+                                        <Badge badgeContent={4} color="primary" sx={{'& .MuiBadge-badge':{color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}}}>
+                                            <ShoppingCart sx={{color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}}/>
+                                        </Badge>
+                                    </IconButton>
+                                }
+
+
                                 {isLogin 
                                 ?
-                                    <UserButton />
+                                    <UserButton navbarColor={navbarColor}/>
                                 :
-                                    <Typography onClick={()=>setOpenLoginDialog(true)} fontWeight={600} sx={{cursor:'pointer'}}>
+                                    <Typography onClick={()=>setOpenLoginDialog(true)} fontWeight={600} sx={{cursor:'pointer',color:(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}}>
                                         Log In
                                     </Typography>
+                                    // <UserIcon width={20} height={20} color={belongTo === 'white' ? '#111' : '#fff'}/>
                                 }
                             </div>
                         </div>
@@ -251,7 +287,7 @@ const settings =[
     {
         primary:'Profile setting', 
         secondary:'', 
-        path:'account/account-setting', 
+        path:'/account/setting', 
         icon:(fontSize)=><Settings fontSize={fontSize}/>
     }, 
     {
@@ -310,7 +346,7 @@ MenuCustom.propTypes = {
     menuList: PropTypes.array, 
     isMenuWithProfile:PropTypes.bool
 }
-function UserButton()
+function UserButton({navbarColor})
 {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -331,7 +367,9 @@ function UserButton()
                     aria-expanded={open ? 'true' : undefined}
                 >
                     {/* <Avatar sx={{ bgcolor: deepOrange[500], width: 30, height: 30 }}>DV</Avatar> */}
-                    <AccountCircle sx={{color:"#fff"}} fontSize='large'/>
+                    {/* <AccountCircle  sx={{color:belongTo === 'white ' ? '#111' : '#fff'}} fontSize='large'/> */}
+                    
+                    <UserIcon width={22} height={22} color={(navbarColor === '' || navbarColor === 'black')  ? '#fff' : '#111'}/>
                 </IconButton>
             </Tooltip>
             <MenuCustom open={open} onCloseMenu={handleClose} minWidth={200} anchorEl={anchorEl} menuList={settings} isMenuWithProfile={true}/>
@@ -410,14 +448,102 @@ function DrawerHorizontal({open, toggleDrawer})
 {
     return (
         <Drawer open={open} onClose={toggleDrawer(false)} anchor='top' aria-hidden="false"> 
-            <Box  role="presentation" onClick={toggleDrawer(false)} sx={{width:'auto', marginTop:'80px', flexGrow: 1}}>
-                <Grid2 container justifyContent="center" >
-                    <Grid2 size={10} marginTop="20px" sx={{bgcolor:'white', padding:'20px', borderRadius:'10px'}}>
-                        <div className="profile-setting" >
-                            3D PRINTER CATEGORIES
-                        </div>
-                    </Grid2>
-                </Grid2>
+            <Box  role="presentation"  sx={{width:'auto', marginTop:'80px', flexGrow: 1}}>
+                <div className="container">
+                    <Box sx={{padding:'20px 0'}}>
+                        <Box>
+                            <Typography sx={{paddingBottom:'20px',fontWeight:'600', fontSize:'1.6rem'}} varient='h6'>Đồ chơi trẻ em</Typography>
+                            <Divider sx={{borderColor:'var(--link-color)'}}/>
+                            <Stack padding="20px 0" direction='row' flexWrap={'wrap'} justifyContent={'space-between'}>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                        <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                        <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                    <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                            </Stack>
+                        </Box>
+                        <Box>
+                            <Typography sx={{paddingBottom:'20px',fontWeight:'600', fontSize:'1.6rem'}} varient='h6'>Đồ chơi trẻ em</Typography>
+                            <Divider sx={{borderColor:'var(--link-color)'}}/>
+                            <Stack padding="20px 0" direction='row' flexWrap={'wrap'} justifyContent={'space-between'}>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                        <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                        <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                                <Link to={'/'} className={cx('link-item')}>
+                                    <div className={cx('link-item_image')}>
+                                        <img src="https://cdn1.bambulab.com/common/navbar-x1.png"/>
+                                    </div>
+                                    <div className={cx('link-item_content')}>
+                                    <Typography fontWeight={600} variant='h6' fontSize={'1.5rem'}>
+                                            Bambu Lab X1 Series
+                                        </Typography>
+                                        <Typography variant='body1' fontSize={'1.4rem'}>
+                                            State-of-the-art Core XY 3D printer
+                                        </Typography>
+                                    </div>
+                                </Link>
+                               
+                            </Stack>
+                        </Box>
+                    </Box>
+                </div>
             </Box>
         </Drawer>
     )

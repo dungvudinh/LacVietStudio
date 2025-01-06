@@ -1,20 +1,19 @@
-import styles from './MainLayout.module.scss';
-import Navbar from '../LayoutComponents/Navbar';
-import {HomeFooter} from '../LayoutComponents/Footer';
+import styles from './Service.module.scss'
 import classNames from 'classnames/bind';
 import Contact from '../../components/Contact';
+import Navbar from '../LayoutComponents/Navbar';
 const cx = classNames.bind(styles);
-function MainLayout({children}) {
+function ServiceLayout({children}) {
     return ( 
         <div className={cx('container')}>
             <Navbar belongTo={'home'}/>
             <div className={cx('content')}>
                 {children}
             </div>
-            <HomeFooter />
+            {/* <HomeFooter /> */}
             <Contact />
         </div>
      );
 }
 
-export default MainLayout;
+export default ServiceLayout;

@@ -1,0 +1,54 @@
+@use '../GlobalStyles/GlobalStyles.scss' as *;
+
+.contact-box {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.contact-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    border: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        width: 200%;
+        height: 200%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.2);
+        animation: ring 2s infinite;
+    }
+
+    &::after {
+        animation-delay: 1s;
+    }
+}
+
+@keyframes ring {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+}

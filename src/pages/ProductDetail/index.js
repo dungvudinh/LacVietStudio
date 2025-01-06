@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, Container, Grid2 as Grid, Typography, Select, MenuItem, Button, Stack, TextField } from '@mui/material';
+import classNames from 'classnames/bind';
+import styles from './ProductDetail.module.scss';
+import { Add, Remove } from '@mui/icons-material';
+
+const cx = classNames.bind(styles);
 const product = {
     name: '3D Printer Filament',
     price: 29.99,
@@ -24,105 +29,143 @@ function ProductDetail() {
     
 
     return (
-        <Container maxWidth="lg" sx={{ py: 4,paddingTop:'130px'}}>
-            <Grid container spacing={4}>
-                <Grid  xs={12} md={6}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <img 
-                            src={product.images[selectedImage]} 
-                            alt={product.name}
-                            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-                        />
-                        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-                            {product.images.map((image, index) => (
-                                <Box
-                                    key={index}
-                                    onClick={() => setSelectedImage(index)}
-                                    sx={{
-                                        width: 80,
-                                        height: 80,
-                                        cursor: 'pointer',
-                                        border: index === selectedImage ? '2px solid #f77919' : '2px solid transparent',
-                                    }}
-                                >
-                                    <img
-                                        src={image}
-                                        alt={`${product.name} ${index + 1}`}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                        }}
-                                    />
-                                </Box>
-                            ))}
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid  xs={12} md={6}>
-                    <Stack spacing={3}>
-                        <Typography variant="h4" component="h1">
-                            {product.name}
-                        </Typography>
-                        <Typography variant="h5" component="p">
-                            ${product.price}
-                        </Typography>
-                        
-                        <Box>
-                            <Typography variant="subtitle1" gutterBottom>
-                                Material Type
-                            </Typography>
-                            <Select
-                                fullWidth
-                                value={selectedOption}
-                                onChange={(e) => setSelectedOption(e.target.value)}
-                            >
-                                {product.options.map((option) => (
-                                    <MenuItem key={option} value={option}>
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </Box>
-
-                        <Box>
-                            <Typography variant="subtitle1" gutterBottom>
-                                Quantity
-                            </Typography>
-                            <TextField
-                                type="number"
-                                value={quantity}
-                                onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))}
-                                inputProps={{ min: 1 }}
+        <>
+            <Container maxWidth="lg" sx={{ py: 4, paddingTop: '130px' }}>
+                <Grid container spacing={4}>
+                    <Grid  xs={12} md={6}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                            <img 
+                                src={product.images[selectedImage]} 
+                                alt={product.name}
+                                style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
                             />
+                            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+                                {product.images.map((image, index) => (
+                                    <Box
+                                        key={index}
+                                        onClick={() => setSelectedImage(index)}
+                                        sx={{
+                                            width: 80,
+                                            height: 80,
+                                            cursor: 'pointer',
+                                            border: index === selectedImage ? '1px solid #f77919' : '1px solid transparent',
+                                        }}
+                                    >
+                                        <img
+                                            src={image}
+                                            alt={`${product.name} ${index + 1}`}
+                                            style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                            }}
+                                        />
+                                    </Box>
+                                ))}
+                            </Box>
                         </Box>
+                    </Grid>
+                    <Grid  xs={12} md={6} >
+                        <Stack spacing={3} width="100%">
+                            <div className={cx('product-meta')}>
+                                <Typography variant="h5" fontSize="2.5rem" fontWeight={600}>
+                                    {product.name}
+                                </Typography>
+                                <Typography variant="h5"  fontWeight={700} fontSize="2.4rem" mt={2}>
+                                    ${product.price}
+                                    <span className={cx('product-old_price')}>$299.00 USD</span>
+                                </Typography>
+                            </div>
+                            <div className={cx('product-features')}>
+                                <Typography variant='p' fontWeight={600}>
+                                    Product Features
+                                </Typography>
+                                <ul className={cx('product-features_content')}>
+                                    <li className={cx('product-features_item')}>
+                                        Full-auto Calibration
+                                    </li>
+                                    <li className={cx('product-features_item', 'highlight')}>
+                                        Multi-Color Printing (Combo Version)
+                                    </li>
+                                    <li className={cx('product-features_item')}>
+                                        Full-auto Calibration
+                                    </li>
+                                    <li className={cx('product-features_item')}>
+                                        Full-auto Calibration
+                                    </li>
+                                    <li className={cx('product-features_item')}>
+                                        Full-auto Calibration
+                                    </li>
+                                </ul>
+                            </div>
+                            <div className={cx('product-options')}>
+                                <Typography variant='p' fontWeight={600}>
+                                    Options
+                                </Typography>
+                                <ul className={cx('product-options_content')}>
+                                    {product.options.map((option, index) => (
+                                        <li 
+                                            key={index} 
+                                            className={cx('option-item', { selected: selectedOption === option })}
+                                            onClick={() => setSelectedOption(option)}
+                                        >
+                                            <img 
+                                                className={cx('option-image')} 
+                                                src={product.images[0]} 
+                                                alt={option} 
+                                            />
+                                            <div className={cx('option-info')}>
+                                                <div className={cx('option-name')}>{option}</div>
+                                                <div className={cx('option-price')}>${product.price}</div>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className={cx('product-quantity')}>
+                                <Typography variant='p' fontWeight={600}>
+                                    Quantity
+                                </Typography>
 
+                                  
+                                <Box  border="1px solid #ddd" padding={1} display='inline-flex' justifyContent ='space-between' alignItems='center' marginTop="20px">
+                                    <Add  fontSize="small"/>
+                                    <input style={{outline:'none', border:'none', width:'35px', textAlign:'center'}} defaultValue={1}/>
+                                    <Remove fontSize='small' />
+                                </Box>
+                            </div>
+                        </Stack>
+                    </Grid>
+                </Grid>
+            </Container>
+            
+            <Box className={cx('product-order')}>
+                <Container maxWidth="lg">
+                    <Stack direction="row" spacing={2} alignItems="center" justifyContent="flex-end">
                         <Box>
-                            <Typography variant="subtitle1" gutterBottom>
-                                Payment Type
+                            <Typography variant="h4" fontWeight={700}>
+                                ${product.price}
+                                <span className={cx('product-old_price')}>$299.00 USD</span>
                             </Typography>
-                            <Select
-                                fullWidth
-                                value={paymentType}
-                                onChange={(e) => setPaymentType(e.target.value)}
-                            >
-                                <MenuItem value="credit">Credit Card</MenuItem>
-                                <MenuItem value="debit">Debit Card</MenuItem>
-                                <MenuItem value="paypal">PayPal</MenuItem>
-                            </Select>
                         </Box>
-
                         <Button 
                             variant="contained" 
-                            size="large"
-                            sx={{ mt: 2 }}
+                            sx={{ 
+                                bgcolor: 'var(--primary-color)',
+                                '&:hover': {
+                                    bgcolor: 'var(--primary-color-hover)'
+                                }, 
+                                color:'#FFF',
+                                minWidth:'300px', 
+                                width:'auto'
+                            }}
                         >
                             Add to Cart
                         </Button>
                     </Stack>
-                </Grid>
-            </Grid>
-        </Container>
+                </Container>
+            </Box>
+        </>
     );
 }
 

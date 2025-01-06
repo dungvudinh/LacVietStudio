@@ -30,7 +30,8 @@ const theme = createTheme({
     white:'#ffffff',
     dark:'#111', 
     iconFillColor:'#BDBDBD', 
-    borderColor:'#ddd'
+    borderColor:'#ddd', 
+    linkColor:'#6a6a6a'
   }, 
   
 })

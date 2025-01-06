@@ -3,7 +3,14 @@ const routes = {
     store:'/store', 
     login:'/login', 
     logout:'/logout', 
-    productDetail: '/product-detail'
+    productDetail: '/product-detail/:id', 
+    account:'/account', 
+    accountSetting:'/account/setting', 
+    news:'/news',
+    newsDetail:'/news/:id',
+    architectureModel:'/architecture-model',
+    contactUs:'/contact-us',
+    service:'/service',
 }
 
 export default routes;

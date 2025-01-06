@@ -12,26 +12,21 @@
     left:0;
     right:0;
     transition: height 0.3s ease, background-color 0.3s ease;
-    &.dark 
+    &.white
     {
-        background-color:#111;
-        color: #111;
+        background-color: #fff;
         border-bottom: 1px solid var(--border-color);
-        // Update icon colors for white background
-        .MuiSvgIcon-root {
-            color: #111 !important;
+        .menu-item
+        {
+            color:#111;
         }
-        
-        // Update select color for white background
-        .MuiSelect-select {
-            color: #111 !important;
-        }
-
-        // Update menu icon color for white background
-        .menu-mobile {
-            .MuiIconButton-root {
-                color: #111 !important;
-            }
+    }
+    &.black
+    {
+        background-color: #111;
+        .menu-item
+        {
+            color:#fff;
         }
     }
     &.shrink 
@@ -121,6 +116,7 @@
     align-items: center;
     position: relative;
     font-size: 1.6rem;
+
     @include mobile
     {
         font-size: 1.4rem !important;
@@ -146,4 +142,25 @@
 .MuiAccordion-root
 {
     box-shadow: none !important;
+}
+
+// 3d store content 
+.link-item 
+{
+    display:flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    padding:20px;
+    .link-item_image img
+    {
+        width:130px;
+        height:150px;
+        object-fit: scale-down;
+    }
+    .link-item_content
+    {
+        padding:20px 0;
+        margin-left:20px;
+    }
 }

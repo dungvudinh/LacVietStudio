@@ -1,7 +1,6 @@
-import '~/App.css';
+import './App.css';
 import {useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-
 import Home from './pages/Home';
 import Navbar from './layouts/LayoutComponents/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,7 +9,8 @@ import Account from './pages/Account';
 import Footer from './layouts/LayoutComponents/Footer';
 import Store from './pages/Store';
 import ProductDetail from './pages/ProductDetail';
-
+import { publicRoutes, privateRoutes } from './routes';
+import { MainLayout } from './layouts';
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -21,11 +21,7 @@ function ScrollToTop() {
   return null;
 }
 
-/**
- * The main App component that sets up the routing and renders the Navbar and main content.
- * It checks the user's locale and stores it in localStorage, then renders the Home and Account pages
- * using React Router.
- */
+
 function App() {
   useEffect(()=>{
     const storeLocale = localStorage.getItem('locale');
@@ -40,21 +36,28 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="navbar-wrapper">
+      {/* <div className="navbar-wrapper">
         <Navbar />
       </div>
-      <div className="App">
+      <div className="App"> */}
         <Routes>
-          <Route path='/'  element={<Home />}/>
+          {/* <Route path='/'  element={<Home />}/>
           <Route path='/store' element={<Store />}/>
           <Route path='/product-detail/:id' element={<ProductDetail />} />
           <Route path='/account' >
             <Route index element={<Account />}/>
             <Route path='account-setting' element={<AccountSetting />}/>  
-          </Route>
+          </Route> */}
+          {
+            publicRoutes.map((route, index)=>{
+              const Page = route.component;
+              const Layout = route.layout || MainLayout;
+              return <Route key={index} path={route.path} element={<Layout><Page /></Layout>}/>
+            })
+          }
         </Routes>
-      </div>
-      <Footer />
+      {/* </div> */}
+      {/* <Footer /> */}
     </Router>
   );
 }
