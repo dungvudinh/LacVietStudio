@@ -1,26 +1,29 @@
-import {Grid2 as Grid, Link, Box, Stack, Typography, Accordion, AccordionSummary, AccordionDetails, Button} from "@mui/material";
+import {Grid2 as Grid, Link, Box, Stack, Typography, Accordion, AccordionSummary, AccordionDetails, Container} from "@mui/material";
 import styles from './Home.module.scss';
 import classNames from "classnames/bind";
-import { Container} from 'react-bootstrap';
 import HeroSlide from "../../layouts/LayoutComponents/HeroSlide";
 import categoryItem1 from '../../assets/images/categoryItem1.jpg';
 import { ArrowForward, KeyboardArrowRight, ExpandMore } from "@mui/icons-material";
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
 import PropTypes from 'prop-types';
-import { css } from '@emotion/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import serviceImg1 from '../../assets/images/serviceImg1.jpg'
 import newsImg1 from '../../assets/images/newsImg1.jpeg'
 import newsImg2 from '../../assets/images/newsImg2.jpeg'
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import viettelPost from '../../assets/images/viettelPost.png';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import img1 from '../../assets/images/saban/img1.jpg';
 import img2 from '../../assets/images/saban/img2.jpg';
 import img3 from '../../assets/images/saban/img3.jpg';
+
+import heroSlideImg2 from '../../assets/images/heroSlideImg2.jpg'
+import heroSlideImg3 from '../../assets/images/heroSlideImg3.jpg'
+import heroSlideImg4 from '../../assets/images/heroSlideImg4.jpg'
+import heroSlideImg5 from '../../assets/images/heroSlideImg5.jpg'
+
 const cx = classNames.bind(styles);
 
 const category1 = [
@@ -103,158 +106,157 @@ const faqItems = [
         answer: "The cost of 3D printing depends on the material used and the size and complexity of the object."
     }
 ];
-
+const heroSlideData = [
+    { id: 2, image: heroSlideImg2 },
+    { id: 3, image: heroSlideImg3 },
+    { id: 4, image: heroSlideImg4 },
+    { id: 5, image: heroSlideImg5 },
+];
 function Home() {
     const [activeNews, setActiveNews] = useState(0);
-    const swiper = useSwiper();
-    console.log(swiper)
     // const [expanded, setExpanded] = useState(false);
 
     const handleAccordionChange = (index) => (event, isExpanded) => {
         setActiveNews(index);
     };
 
-    useEffect(() => {
-    }, [activeNews]);
-
     return ( 
         <div className={cx('home')}>
-            <HeroSlide />
-            <Container className="mt-5 home-container text-center" style={{paddingBottom: '100px'}}>
-                <h1 className={cx('category2-title')}>
-                    3D Store
-                </h1>
-                <div className={cx('category2-desc')}>
-                    Khám phá về những sản phẩm tuyệt vời của chúng tôi
-                </div>
-                {/* category 1 */}
-                <Grid container spacing={2} >
-                    {category1.map(categoryItem=>(
-                        <Grid size={6} key={categoryItem.id}>
-                            <div style={{backgroundImage:`url(${categoryItem1})`}} className={cx('grid-bg-item')}>
-                                <div className={cx("text-content")}>
-                                    <h1 className={cx('grid-item_title')}>{categoryItem.title}</h1>
-                                    <div className={cx('grid-item_desc')}>
-                                        {categoryItem.desc}
-                                    </div>
-                                    <div className={cx('grid-item_link')}>
+            <HeroSlide heroSlideData={heroSlideData}/>
+            <Box sx={{paddingBottom:'50px', marginTop:'100px', textAlign:'center'}}>
+                <Container maxWidth='xl'>
+                    <Typography varient='h1' fontWeight={700} fontSize={{xs:'2.5rem', md:'3.5rem'}}>
+                        3D Store
+                    </Typography>
+                    <Typography varient='h6' fontSize={{xs:'1.5rem', md:'1.8rem'}} >
+                        Khám phá về những sản phẩm tuyệt vời của chúng tôi
+                    </Typography>
+                    <Stack gap={2} direction={{md:'row', xs:'column'}} mt={'2rem'}>
+                        {
+                            category1.map(categoryItem=>(
+                                <div key={categoryItem.id} style={{backgroundImage:`url(${categoryItem1})`}} className={cx('grid-bg-item')}>
+                                    <div className={cx("text-content")}>
+                                        <Typography variant="h1" fontWeight={600} fontSize={{md:'3rem', xs:'2rem'}}>
+                                            {categoryItem.title}
+                                        </Typography>
+                                        <Typography varient='h6' fontSize={{md:'1.6rem', xs:'1.4rem'}} padding='10px 0'>
+                                            {categoryItem.desc}
+                                        </Typography>
                                         <Link color="primary" underline="hover" href={categoryItem.buyPath}
                                         sx={{fontSize:'1.6rem', cursor:'pointer', display:'flex', flexDirection:'row', justifyContent:'center'}} > 
                                             <p>Buy now</p>
                                             <KeyboardArrowRight sx={{marginTop:'2px'}}/>
                                         </Link>
-                                        <Link color="primary" underline="hover" href={categoryItem.comparePath}
-                                        sx={{fontSize:'1.6rem', cursor:'pointer', display:'flex', flexDirection:'row', justifyContent:'center'}} > 
-                                            <p>Compare all</p>
-                                            <KeyboardArrowRight sx={{marginTop:'2px'}}/>
-                                        </Link>
                                     </div>
                                 </div>
-                            </div>
-                        </Grid>
-                    ))}
-                </Grid>
-                {/* category 2  */}
-                <Box  textAlign="center" marginTop="100px">
-                    <h1 className={cx('category2-title')}>
+                            ))
+                        }
+                    </Stack>
+                </Container>
+                <Container  sx={{marginTop:'100px',textAlign:'center'}} maxWidth='xl'>
+                    <Typography varient='h1' fontWeight={700} fontSize={{xs:'2.5rem', md:'3.5rem'}}>
                         3D Service
-                    </h1>
-                    <div className={cx('category2-desc')}>
-                        {/* Personalize products according to customer needs */}
+                    </Typography>
+                    <Typography varient='h6' fontSize={{xs:'1.5rem', md:'1.8rem'}} >
                         cá nhân hoá sản phẩm theo nhu cầu của khách hàng
-                    </div>
-                    {/* content */}
-                    <Grid container spacing={2}>
+                    </Typography>
+                    <Stack gap={2} direction={{md:'row', xs:'column'}} mt={'2rem'}>
                         {category2.map(categoryItem=>(
-                            <Grid size={6} position="relative" sx={{cursor:'pointer'}} key={categoryItem.id}>
-                                <div className={cx('img-slider')}>
-                                    <Swiper
-                                        modules={[Navigation, Pagination]}
-                                        spaceBetween={0}
-                                        slidesPerView={1}
-                                        navigation
-                                        pagination={{ dynamicBullets: true }}
-                                        
-                                    >
-                                        <SwiperSlide>
-                                            <picture>
-                                                <img src={serviceImg1} className={cx('service-img_content')}/>
-                                            </picture>
-                                        </SwiperSlide>
-                                    </Swiper>
-                                </div>
-                                <div className={cx('service-item_content')}>
-                                    <Stack direction="row" justifyContent="space-between">
-                                        <div className={cx('text')}>
-                                            <h1>{categoryItem.title}</h1>
-                                            <p>{categoryItem.desc}</p>
-                                        </div>
-                                        <button className={cx('action')}>
-                                            <ArrowForward fontSize="medium" sx={{color:'#fff'}}/>
-                                        </button>
-                                    </Stack>
-                                </div>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+                                <Box position="relative" sx={{cursor:'pointer'}} key={categoryItem.id}>
+                                    <div className={cx('img-slider')}>
+                                        <Swiper
+                                            modules={[Navigation, Pagination]}
+                                            spaceBetween={0}
+                                            slidesPerView={1}
+                                            navigation
+                                            pagination={{ dynamicBullets: true }}
+                                            
+                                        >
+                                            <SwiperSlide>
+                                                <picture>
+                                                    <img src={serviceImg1} className={cx('service-img_content')}/>
+                                                </picture>
+                                            </SwiperSlide>
+                                        </Swiper>
+                                    </div>
+                                    <div className={cx('service-item_content')}>
+                                        <Stack direction="row" justifyContent="space-between">
+                                            <Box>
+                                                <Typography varient='h1' fontWeight={600} fontSize={{md:'3rem', xs:'2rem'}}
+                                                textAlign={'left'}>
+                                                    {categoryItem.title}
+                                                </Typography>
+                                                <Typography varient='h6' fontSize={{md:'1.6rem', xs:'1.4rem'}}
+                                                textAlign={'left'}>
+                                                    {categoryItem.desc}
+                                                </Typography>
+                                            </Box>
+                                            <button className={cx('action')}>
+                                                <ArrowForward fontSize="medium" sx={{color:'#fff'}}/>
+                                            </button>
+                                        </Stack>
+                                    </div>
+                                </Box>
+                            ))}
+                    </Stack>
+                </Container>
                 {/* architecture model 3 */}
-                <Box textAlign='center' className={cx('news-container')} marginTop="100px" >
-                    <Typography variant="h1" fontWeight="bold" textAlign="center" fontSize="3rem" marginBottom="5px">
+                <Container className={cx('news-container')} sx={{marginTop:'100px', textAlign:"center"}} maxWidth='xl'>
+                    <Typography variant="h1" fontWeight="bold" textAlign="center" fontSize={{md:"3rem" , xs:'2rem'}}marginBottom="5px">
                         Mô Hình Sa Bàn
                     </Typography>
-                    <Typography variant="body1"  textAlign="center" fontSize="1.8rem">
+                    <Typography variant="body1"  textAlign="center" fontSize={{md:"1.8rem", xs:'1.5rem'}}>
                         Thiết kế mô hình sa bàn chi tiết, tái hiện chính xác các dự án xây dựng.
                     </Typography>
-                    <Grid container mt={4} spacing={4}>
-                        <Grid size={4} overflow={'hidden'}>
+                    <Stack gap={4} mt={4} direction={'row'}>
                         <div className={cx('architecture-model_item')} style={{backgroundImage:`url(${img1})`}}>
-                                <div className={cx('architecture-model_item__content')}>
-                                    <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff"
-                                    >
-                                        Mô hình cao tầng
-                                    </Typography>
-                                    <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
-                                        Learn more
-                                        <KeyboardArrowRight />
-                                    </Link>
-                                </div>
+                            <div className={cx('architecture-model_item__content')}>
+                                <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff"
+                                >
+                                    Mô hình cao tầng
+                                </Typography>
+                                <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
+                                    Learn more
+                                    <KeyboardArrowRight />
+                                </Link>
                             </div>
-                        </Grid>
-                        <Grid size={4} overflow={'hidden'}>
+                        </div>
+
                         <div className={cx('architecture-model_item')} style={{backgroundImage:`url(${img2})`}}>
-                                <div className={cx('architecture-model_item__content')}>
-                                    <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff"
-                                    >
-                                        Mô hình nhà máy
-                                    </Typography>
-                                    <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
-                                        Learn more
-                                        <KeyboardArrowRight />
-                                    </Link>
-                                </div>
+                            <div className={cx('architecture-model_item__content')}>
+                                <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff">
+                                    Mô hình nhà máy
+                                </Typography>
+                                <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
+                                    Learn more
+                                    <KeyboardArrowRight />
+                                </Link>
                             </div>
-                        </Grid>
-                        <Grid size={4} overflow={'hidden'}>
-                            <div className={cx('architecture-model_item')} style={{backgroundImage:`url(${img3})`}}>
-                                <div className={cx('architecture-model_item__content')}>
-                                    <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff"
-                                    >
-                                        Mô hình quy hoạch
-                                    </Typography>
-                                    <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
-                                        Learn more
-                                        <KeyboardArrowRight />
-                                    </Link>
-                                </div>
+                        </div>
+
+                        <div className={cx('architecture-model_item')} style={{backgroundImage:`url(${img3})`}}>
+                            <div className={cx('architecture-model_item__content')}>
+                                <Typography variant="h5" fontWeight="bold" textAlign="center" fontSize="2.5rem" color="#fff"
+                                >
+                                    Mô hình quy hoạch
+                                </Typography>
+                                <Link to="/" underline="hover" fontSize='1.6rem' sx={{cursor:'pointer'}}>
+                                    Learn more
+                                    <KeyboardArrowRight />
+                                </Link>
                             </div>
-                        </Grid>
-                    </Grid>
+                        </div>
+                    </Stack>
+                </Container>
+                <Box className={cx('slogan_bg')} marginTop={'100px'}>
+                    <Typography varient='h6' fontSize={'3.5rem'} fontWeight={700} position={'relative'} zIndex={'10'} maxWidth={'800px'}>
+                        Biến Ý Tưởng Của Khách Hàng Thành Hiện Thực
+                    </Typography>
                 </Box>
                 {/* NEWS */}
-                <Box textAlign='center' className={cx('news-container')} marginTop="100px" >
+                <Container  className={cx('news-container')} sx={{marginTop:'100px', textAlign:'center'}} maxWidth='xl'>
                     <Typography variant="h1" fontSize="3.5rem" fontWeight={700}>
-                        Lac Viet Studio News
+                        Tin Tức
                     </Typography>
                     <Grid container mt={4}>
                         <Grid size={6} overflow="hidden">
@@ -315,16 +317,16 @@ function Home() {
                             </Box>
                         </Grid>
                     </Grid>
-                </Box>
-                <Box textAlign='center' marginTop="100px">
+                </Container>
+                <Container  sx={{marginTop:'100px', textAlign:'center'}} maxWidth='xl'>
                     <Typography variant="h1" fontSize="3.5rem" fontWeight={700}>
                         Đối tác của chúng tôi
                     </Typography>
                     <Stack marginTop="50px">
                         <img src={viettelPost} alt="viettelPost" style={{width:'200px'}}/>
                     </Stack>
-                </Box>
-                <Box textAlign='center' marginTop="100px">
+                </Container>
+                {/* <Box textAlign='center' marginTop="100px">
                     <Typography variant="h1" fontSize="3.5rem" fontWeight={700}>
                         Câu hỏi thường gặp
                     </Typography>
@@ -340,8 +342,9 @@ function Home() {
                             </Accordion>
                         ))}
                     </Box>
-                </Box>
-            </Container>
+                </Box> */}
+                
+            </Box>
             {/* MAP */}
         </div>
      );

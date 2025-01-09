@@ -13,6 +13,8 @@ import ProfileSettingLayout from '../layouts/ProfileSettingLayout';
 import ContactUs from '../pages/ContactUs';
 import Service from '../pages/Service';
 import ServiceLayout from '../layouts/ServiceLayout';
+import SaleStore from '../pages/SaleStore';
+import LogIn from '../pages/LogIn';
 const publicRoutes = [
     {path:routes.home, component:Home}, 
     {path:routes.store, component:Store, layout:StoreLayout}, 
@@ -23,7 +25,9 @@ const publicRoutes = [
     {path:routes.newsDetail, component:NewsDetail, layout:NewsLayout},
     {path:routes.architectureModel, component:ArchitectureModel}, 
     {path:routes.contactUs, component:ContactUs, layout:ProfileSettingLayout}, 
-    {path:routes.service, component:Service, layout:ServiceLayout}
+    {path:routes.service, component:Service, layout:ServiceLayout}, 
+    {path:routes.sale, component:SaleStore, layout:StoreLayout}, 
+    {path:routes.login, component:LogIn, layout:ProfileSettingLayout}
 ]
 
 const privateRoutes =[]

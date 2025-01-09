@@ -4,6 +4,7 @@
 :root 
 {
     --primary-color:#f77919;
+    --primary-color-bg: #fde6d4;
     --primary-color-hover: #c26015;
     --secondary-color: rgb(89, 89, 89);
     --bg-color-select: #f779191f;
@@ -24,6 +25,7 @@
 html 
 {
     font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 body 
 {
@@ -35,6 +37,7 @@ body
     font-style: normal;
     // overflow: hidden;
     background-color: #f7f7f7 !important;
+    // background-color: #fff !important;
     @include mobile 
     {
         font-size:1.2rem !important;

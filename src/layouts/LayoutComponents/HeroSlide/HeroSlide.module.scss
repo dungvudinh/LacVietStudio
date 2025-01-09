@@ -1,3 +1,4 @@
+@use '../../../components/GlobalStyles/breakpoint' as *;
 .hero-slide 
 {
     margin-bottom:3rem;
@@ -42,6 +43,10 @@
             width:55%;
             padding:0 3rem;
             position: relative;
+            @include mobile 
+            {
+                width:90%;
+            }
             // @include tablet 
             // {
             //     width: 100%;
@@ -53,23 +58,6 @@
             & > * ~ * 
             {
                 margin-top:3rem;
-            }
-            .title 
-            {
-                font-size: 5rem;
-                line-height: 1;
-                // @include tablet{
-                //     font-size: 3rem;
-                // }
-
-            }
-            .overview 
-            {
-                font-size: 2rem;
-                // @include mobile 
-                // {
-                //     font-size: 1.5rem;
-                // }
             }
             .btns 
             {

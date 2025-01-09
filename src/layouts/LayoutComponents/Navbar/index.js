@@ -30,7 +30,7 @@ const menuList = [
         belongTo: ['home', 'store', 'product', 'profile-setting'],
     }, 
     {
-        display:'Service', 
+        display:'Dịch Vụ', 
         path:'/service', 
         contentType:'link', 
         belongTo:['home', 'store', 'product', 'profile-setting'], 
@@ -46,20 +46,20 @@ const menuList = [
         // ]
     }, 
     {
-        display:'Architecture Model', 
+        display:'Mô Hình Sa Bàn', 
         path:'', 
         contentType:'link',
         belongTo:['home', 'profile-setting']
     }, 
     {
-        display:'News',
+        display:'Tin Tức',
         path:'/news',
         contentType:'link',
         belongTo:['home','news', 'profile-setting']
     },
     {
-        display:'End-of-Year Sale', 
-        path:'', 
+        display:'Sale Cuối Năm', 
+        path:'/sale', 
         contentType:'link', 
         belongTo:['store', 'product'], 
         icon:({width, height, className})=><FireIcon  width={width} height={height} className={className}/>
@@ -71,7 +71,7 @@ const menuList = [
     //     belongTo:['home', 'profile-setting'],
     // }, 
     {
-        display:'Contact Us', 
+        display:'Liên hệ', 
         path:'/contact-us', 
         contentType:'link',
         belongTo:['home', 'profile-setting']

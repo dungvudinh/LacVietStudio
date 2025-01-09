@@ -6,24 +6,16 @@ import PropTypes from 'prop-types';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import {ArrowForwardIos} from '@mui/icons-material';
 import heroSlideImg1 from '../../../assets/images/heroSlideImg1.jpg';
 import heroSlideImg2 from '../../../assets/images/heroSlideImg2.jpg';
 import heroSlideImg3 from '../../../assets/images/heroSlideImg3.jpg';
 import heroSlideImg4 from '../../../assets/images/heroSlideImg4.jpg';
 import heroSlideImg5 from '../../../assets/images/heroSlideImg5.jpg';
-
+import sloganBg from '../../../assets/images/sloganBg.jpg'
 const cx = classNames.bind(styles);
-function HeroSlide() {
-    const heroSlideData = [
-        { id: 1, image: heroSlideImg1 },
-        { id: 2, image: heroSlideImg2 },
-        { id: 3, image: heroSlideImg3 },
-        { id: 4, image: heroSlideImg4 },
-        { id: 5, image: heroSlideImg5 },
-    ];
-
+function HeroSlide({heroSlideData}) {
     return (
         <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -49,8 +41,10 @@ function HeroSlideItem({ image, className}) {
         <div className={cx('hero-slide__item', `${className}`)} style={{backgroundImage:`url(${image})`}}>
             <div className={cx('hero-slide__item__content')}>
                 <div className={cx('hero-slide__item__content__info')}>
-                    <h1 className={cx("title")} >Bambu Lab X1C</h1>
-                    <div className={cx('overview')}>A Leap in 3D Printing, the Flagship Core-XY 3D Printer</div>
+                    <Typography varient='h1' fontSize={{xs:'3rem',md:'5rem'}} fontWeight='600' className={cx('title')}>Bambu Lab X1C</Typography>
+                    <Typography varient='h6' fontSize={{xs:'1.5rem', md:'2rem'}} className={cx('overview')}>
+                        A Leap in 3D Printing, the Flagship Core-XY 3D Printer
+                    </Typography>
                     <div className={cx('btns')}>
                         <Button variant="contained" color='primary' 
                         sx={{color:'#fff', width:'180px', textTransform:'none', fontSize:'1.6rem', display:'flex', 

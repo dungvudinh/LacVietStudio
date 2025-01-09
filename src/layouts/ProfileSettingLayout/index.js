@@ -8,7 +8,7 @@ function ProfileSettingLayout({children}) {
             <div className=''>
                 {children}
             </div>
-            <HomeFooter />
+            {/* <HomeFooter /> */}
             <Contact />
         </div>
      );

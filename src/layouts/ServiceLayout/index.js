@@ -1,7 +1,8 @@
-import styles from './Service.module.scss'
+import styles from './ServiceLayout.module.scss'
 import classNames from 'classnames/bind';
 import Contact from '../../components/Contact';
 import Navbar from '../LayoutComponents/Navbar';
+import {HomeFooter} from '../LayoutComponents/Footer';
 const cx = classNames.bind(styles);
 function ServiceLayout({children}) {
     return ( 
@@ -10,7 +11,7 @@ function ServiceLayout({children}) {
             <div className={cx('content')}>
                 {children}
             </div>
-            {/* <HomeFooter /> */}
+            <HomeFooter />
             <Contact />
         </div>
      );

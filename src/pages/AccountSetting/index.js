@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { ArrowForwardIos, HelpOutline, Close, VisibilityOff, Visibility, VisibilityOffOutlined, VisibilityOutlined } from "@mui/icons-material";
 import { Box, Divider, Grid2, List, ListItem, Switch, Typography,DialogContent, Button, DialogActions, 
 Dialog, DialogTitle, IconButton, OutlinedInput, InputLabel, FormControl, InputAdornment, TextField, 
-MenuItem, Select
+MenuItem, Select, Container
 } from "@mui/material";
 import classNames from "classnames/bind";
 import { styled } from '@mui/material/styles';
@@ -18,40 +18,38 @@ function AccountSetting() {
  
     return ( 
         <>
-            <Box sx={{ flexGrow: 1 }}>
-                <Grid2 container justifyContent="center" >
-                    <Grid2 size={7} marginTop="20px" sx={{bgcolor:'white', borderRadius:'4px'}}>
-                        <div className="profile-setting">
-                            <p className={cx('profile-setting_title')}>
-                                Account Security    
-                            </p>
-                            <Divider /> 
-                            <div className={cx('profile-setting_content')} style={{padding:'0 24px'}}>
-                                <List  sx={{ width: '100%', bgcolor: 'background.paper', padding:0}}>
-                                    <ListItem secondaryAction={<ArrowForwardIos sx={{fontSize:'17px'}}/>} sx={{padding:'22px 0'}}>
-                                        <p className={cx('setting-item_title', 'm-0')}>Change Password</p>
-                                        <PasswordHint numCharacter={5}/>
-                                    </ListItem>
-                                    <Divider />
-                                    <ListItem sx={{padding:'22px 0'}} secondaryAction={
-                                        <Switch edge="end" onChange={()=>setOpenVerifyPass(true)} checked={isCorrectPass} size='small'/>}
-                                    >
-                                        <p className={cx('setting-item_title', 'm-0')}>
-                                            2-Step Verifcation 
-                                            <HelpOutline  sx={{marginLeft:'5px', color:'iconFillColor', fontSize:'15px'}}/>
-                                        </p>
-                                        <p className={cx('setting-item_content')}>Turned Off</p>
-                                    </ListItem>
-                                    <Divider />
-                                    <ListItem secondaryAction={<ArrowForwardIos sx={{fontSize:'17px'}}/>} sx={{padding:'22px 0'}}>
-                                        <p className={cx('setting-item_title', 'm-0')}>Delete Account</p>
-                                    </ListItem>
-                                </List>
-                            </div>
+            <Container sx={{ flexGrow: 1}} maxWidth='md'>
+                <Box size={7} marginTop="100px" sx={{bgcolor:'white', borderRadius:'4px'}}>
+                    <div className="profile-setting">
+                        <p className={cx('profile-setting_title')}>
+                            Account Security    
+                        </p>
+                        <Divider /> 
+                        <div className={cx('profile-setting_content')} style={{padding:'0 24px'}}>
+                            <List  sx={{ width: '100%', bgcolor: 'background.paper', padding:0}}>
+                                <ListItem secondaryAction={<ArrowForwardIos sx={{fontSize:'17px'}}/>} sx={{padding:'22px 0'}}>
+                                    <p className={cx('setting-item_title', 'm-0')}>Change Password</p>
+                                    <PasswordHint numCharacter={5}/>
+                                </ListItem>
+                                <Divider />
+                                <ListItem sx={{padding:'22px 0'}} secondaryAction={
+                                    <Switch edge="end" onChange={()=>setOpenVerifyPass(true)} checked={isCorrectPass} size='small'/>}
+                                >
+                                    <p className={cx('setting-item_title', 'm-0')}>
+                                        2-Step Verifcation 
+                                        <HelpOutline  sx={{marginLeft:'5px', color:'iconFillColor', fontSize:'15px'}}/>
+                                    </p>
+                                    <p className={cx('setting-item_content')}>Turned Off</p>
+                                </ListItem>
+                                <Divider />
+                                <ListItem secondaryAction={<ArrowForwardIos sx={{fontSize:'17px'}}/>} sx={{padding:'22px 0'}}>
+                                    <p className={cx('setting-item_title', 'm-0')}>Delete Account</p>
+                                </ListItem>
+                            </List>
                         </div>
-                    </Grid2>
-                </Grid2>
-            </Box>
+                    </div>
+                </Box>
+            </Container>
             <VerifyPasswordDialog open={openVerifyPass} onClose={()=>setOpenVerifyPass(false)} setIsCorrectPass={setIsCorrectPass}/>
         </>
         
@@ -97,16 +95,16 @@ function VerifyPasswordDialog({open, onClose, setIsCorrectPass})
         aria-labelledby="customized-dialog-title"
         open={open}
         fullWidth={false}
-        maxWidth="xs"
+        maxWidth="sm"
         sx={{ 
           borderRadius: '20px', 
           color: 'black',
           '& .MuiDialog-paper': {  // Add this to set specific width
-              width: '400px'
+              width: '450px'
           }
       }}
       >
-        <DialogTitle sx={{ m: 0, p: 2, fontWeight:'700', fontSize:'1.3rem' }} id="customized-dialog-title">
+        <DialogTitle sx={{ m: 0, p: 2, fontWeight:'700', fontSize:'2rem' }} id="customized-dialog-title">
           Verify Your Password
         </DialogTitle>
         <IconButton
@@ -122,7 +120,7 @@ function VerifyPasswordDialog({open, onClose, setIsCorrectPass})
           <Close />
         </IconButton>
         <DialogContent dividers >
-          <Typography gutterBottom  sx={{fontSize:'1.1rem'}}>
+          <Typography gutterBottom  sx={{fontSize:'1.5rem'}}>
             To protect your account security, please re-enter your password before continuing.
           </Typography>
           <CssTextField  id="outlined-size-small" size="small" type={showPassword ? 'text' :'password'} fullWidth={true}
@@ -130,7 +128,7 @@ function VerifyPasswordDialog({open, onClose, setIsCorrectPass})
           slotProps={{
             input:{
                 style: {
-                  fontSize: '1.1rem'
+                  fontSize: '1.5rem'
                 },
                 endAdornment:
                 <InputAdornment position="end">
@@ -153,10 +151,10 @@ function VerifyPasswordDialog({open, onClose, setIsCorrectPass})
         />
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={onClose} variant='outlined' sx={{ fontSize: '1.1rem', textTransform: 'none' }} color='secondary'>
+          <Button autoFocus onClick={onClose} variant='outlined' sx={{ fontSize: '1.5rem', textTransform: 'none' }} color='secondary'>
             Cancel
           </Button>
-          <Button autoFocus onClick={handleAuthenPassword} variant='contained' sx={{ fontSize: '1.1rem', textTransform: 'none', color: '#fff' }} >
+          <Button autoFocus onClick={handleAuthenPassword} variant='contained' sx={{ fontSize: '1.5rem', textTransform: 'none', color: '#fff' }} >
             Go On
           </Button>
         </DialogActions>

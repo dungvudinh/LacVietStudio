@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Grid2 as Grid, Box, TextField, InputAdornment, IconButton, MenuItem, Menu, Pagination, Typography, Divider, Checkbox, ListItemIcon } from "@mui/material";
 import { Container } from 'react-bootstrap';
-import styles from './Store.module.scss';
+import styles from './SaleStore.module.scss';
 import classNames from "classnames/bind";
 import HeroSlide from "../../layouts/LayoutComponents/HeroSlide";
 import { Check, Clear, KeyboardDoubleArrowRight, Search, Sort} from "@mui/icons-material";
@@ -11,6 +11,7 @@ import heroSlideImg2 from '../../assets/images/heroSlideImg2.jpg'
 import heroSlideImg3 from '../../assets/images/heroSlideImg3.jpg'
 import heroSlideImg4 from '../../assets/images/heroSlideImg4.jpg'
 import heroSlideImg5 from '../../assets/images/heroSlideImg5.jpg'
+import { SaleIcon } from "../../assets/icons";
 
 const cx = classNames.bind(styles);
 const categories = [
@@ -148,7 +149,7 @@ function Store() {
         <div className={cx('store')}>
             <HeroSlide heroSlideData={heroSlideData} />
             <Container className="mt-5 store-container">
-                <h1 className={cx('store-title')}>3D Store</h1>
+                <h1 className={cx('store-title')}>3D Sale </h1>
                 
                 {/* Search bar */}
                 <Box className={cx('search-container')} sx={{display: 'flex', gap: 2, alignItems: 'center'}}>
@@ -276,6 +277,7 @@ function Store() {
                                 {[1,2,3,4,5,6,7,8, 9, 10, 11, 12].map((item, index) => (
                                     <Grid size={4} key={index}>
                                         <Link className={cx('product-item')} to={`/product-detail/1`}>
+                                            <SaleIcon width={45} height={45} className='position-absolute top-1 end-0 z-3'/>
                                             <div className={cx('image-container')}>
                                                 <img 
                                                     src="https://store.bblcdn.com/s1/default/84be8e60e0f244d0b77a73b1f7b09ff9.png__op__resize,m_lfit,w_640__op__format,f_auto__op__quality,q_80"
@@ -284,8 +286,8 @@ function Store() {
                                                 />
                                             </div>
                                             <h3  className={cx('product-name')}>Bambu Lab A1 mini 3D Printer {item}</h3>
-                                            <h3  className={cx('product-price')}>From $199.00 USD 
-                                                <span className={cx('product-old_price')}>$299.00 USD</span>
+                                            <h3  className={cx('product-price')}>200.000 VND
+                                                <span className={cx('product-old_price')}>350.000 VND</span>
                                             </h3>
                                         </Link>
                                     </Grid>

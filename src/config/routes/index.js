@@ -11,6 +11,8 @@ const routes = {
     architectureModel:'/architecture-model',
     contactUs:'/contact-us',
     service:'/service',
+    sale:'/sale', 
+    login:'/login'
 }
 
 export default routes;
